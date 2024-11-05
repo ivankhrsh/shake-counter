@@ -51,8 +51,8 @@ export default function ShakeCounter() {
       {!isPermissionGranted && !error && (
         <div className="space-y-4">
           <p className="rouned-sm border border-white p-2">
-            This app needs access to the device's motion and orientation data in
-            order to function properly.
+            This app needs access to the device&apos;s motion and orientation
+            data in order to function properly.
           </p>
 
           <button
