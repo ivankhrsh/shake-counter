@@ -1,7 +1,6 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 
-// Mock the useDeviceOrientation hook
 jest.mock("@/app/hooks/useDeviceOrientation", () => {
   return jest.fn();
 });
@@ -11,7 +10,6 @@ import useDeviceOrientation from "@/app/hooks/useDeviceOrientation";
 
 describe("ShakeCounter Component", () => {
   beforeEach(() => {
-    // Reset mocks before each test
     jest.clearAllMocks();
   });
 

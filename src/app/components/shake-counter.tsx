@@ -26,7 +26,7 @@ export default function ShakeCounter() {
   }
 
   function handleShakeInterval(e: React.ChangeEvent<HTMLInputElement>) {
-    let value = e.target.value;
+    const value = e.target.value;
     setShakesInterval(Number(value));
   }
 
@@ -50,8 +50,9 @@ export default function ShakeCounter() {
       {!isPermissionGranted && !error && (
         <div className="space-y-4">
           <p className="rouned-sm border border-white p-2">
-            This app needs access to the device's motion and orientation data in
-            order to function properly.
+            {
+              "This app needs access to the device's motion and orientation data in order to function properly."
+            }
           </p>
           <button
             onClick={requestPermission}
