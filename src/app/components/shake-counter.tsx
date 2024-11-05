@@ -39,6 +39,7 @@ export default function ShakeCounter() {
 
   return (
     <div className="m-auto w-full space-y-4 text-white lg:max-w-xl">
+      <p>Status: {isPermissionGranted ? "Granted" : "No"}</p>
       {error && <div className="text-center text-red-500">{error.message}</div>}
 
       {!isSupported && (
@@ -50,10 +51,10 @@ export default function ShakeCounter() {
       {!isPermissionGranted && !error && (
         <div className="space-y-4">
           <p className="rouned-sm border border-white p-2">
-            {
-              "This app needs access to the device's motion and orientation data in order to function properly."
-            }
+            This app needs access to the device's motion and orientation data in
+            order to function properly.
           </p>
+
           <button
             onClick={requestPermission}
             className="w-full rounded-sm bg-green-600 p-2 text-center hover:bg-green-500 hover:text-green-900"
