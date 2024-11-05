@@ -1,3 +1,4 @@
+"use client";
 import { useCallback, useEffect, useState } from "react";
 
 interface DeviceOrientationState {
@@ -19,13 +20,8 @@ function useDeviceOrientation() {
     absolute: false,
   });
   const [error, setError] = useState<Error | null>(null);
-
-  const isSupported = typeof window.DeviceOrientationEvent !== "undefined";
-
-  const [isPermissionGranted, setIsPermissionGranted] = useState(
-    typeof (DeviceOrientationEvent as unknown as DeviceOrientationEventExtended)
-      .requestPermission !== "function"
-  );
+  const [isSupported, setIsSupported] = useState(false);
+  const [isPermissionGranted, setIsPermissionGranted] = useState(false);
 
   const handleOrientation = useCallback((event: DeviceOrientationEvent) => {
     setOrientation({
@@ -37,25 +33,41 @@ function useDeviceOrientation() {
   }, []);
 
   useEffect(() => {
-    if (isPermissionGranted) {
-      window.addEventListener("deviceorientation", handleOrientation);
-      return () => {
-        window.removeEventListener("deviceorientation", handleOrientation);
-      };
+    if (typeof window !== "undefined") {
+      const supportCheck = typeof window.DeviceOrientationEvent !== "undefined";
+      setIsSupported(supportCheck);
+
+      if (supportCheck) {
+        const deviceOrientationEvent =
+          DeviceOrientationEvent as unknown as DeviceOrientationEventExtended;
+
+        setIsPermissionGranted(
+          typeof deviceOrientationEvent.requestPermission !== "function"
+        );
+
+        if (isPermissionGranted) {
+          window.addEventListener("deviceorientation", handleOrientation);
+          return () => {
+            window.removeEventListener("deviceorientation", handleOrientation);
+          };
+        }
+      }
     }
   }, [isPermissionGranted, handleOrientation]);
 
   const requestPermission = useCallback(async () => {
-    const deviceOrientationEvent =
-      DeviceOrientationEvent as unknown as DeviceOrientationEventExtended;
+    if (typeof window !== "undefined") {
+      const deviceOrientationEvent =
+        DeviceOrientationEvent as unknown as DeviceOrientationEventExtended;
 
-    if (typeof deviceOrientationEvent.requestPermission === "function") {
-      try {
-        const permissionState =
-          await deviceOrientationEvent.requestPermission();
-        setIsPermissionGranted(permissionState === "granted");
-      } catch (error) {
-        setError(error as Error);
+      if (typeof deviceOrientationEvent.requestPermission === "function") {
+        try {
+          const permissionState =
+            await deviceOrientationEvent.requestPermission();
+          setIsPermissionGranted(permissionState === "granted");
+        } catch (error) {
+          setError(error as Error);
+        }
       }
     }
   }, []);
