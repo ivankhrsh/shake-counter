@@ -39,12 +39,13 @@ export default function ShakeCounter() {
 
   return (
     <div className="m-auto w-full space-y-4 text-white lg:max-w-xl">
-      <p>Status: {isPermissionGranted ? "Granted" : "No"}</p>
+      <p>Permission Status: {isPermissionGranted ? "Granted" : "No"}</p>
       {error && <div className="text-center text-red-500">{error.message}</div>}
 
       {!isSupported && (
         <div className="text-center text-red-500">
-          Your device is not supported. Please try another one.
+          Your device is not supported. App requires motion and orientation
+          sensors. Please try another one device.
         </div>
       )}
 

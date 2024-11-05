@@ -64,13 +64,18 @@ function useDeviceOrientation() {
         try {
           const permissionState =
             await deviceOrientationEvent.requestPermission();
-          setIsPermissionGranted(permissionState === "granted");
+          if (permissionState === "granted") {
+            setIsPermissionGranted(true);
+            window.addEventListener("deviceorientation", handleOrientation);
+          } else {
+            setError(new Error("Permission denied"));
+          }
         } catch (error) {
           setError(error as Error);
         }
       }
     }
-  }, []);
+  }, [handleOrientation]);
 
   return {
     error,
