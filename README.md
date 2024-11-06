@@ -1,5 +1,14 @@
 ## Device Shake Counter Test Task by Ivan Khoroshylov
 
+
+### Task Description:
+Create a React application that tracks sharp device shakes using data from the accelerometer or gyroscope. Each shake should be counted and displayed as the total number of shakes on the screen. The app should also include an animation that visually responds to each shake.
+
+### Technical Requirements:
+- React
+- TailwindCSS
+- Sensors API
+
 ### Getting Started
 
 First, run the development server with your browser.
