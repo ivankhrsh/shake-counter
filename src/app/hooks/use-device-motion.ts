@@ -35,34 +35,19 @@ function useDeviceMotion() {
       const supportCheck = typeof window.DeviceMotionEvent !== "undefined";
       setIsSupported(supportCheck);
 
-      if (supportCheck) {
-        const deviceMotionEvent =
-          DeviceMotionEvent as unknown as DeviceMotionEventExtended;
-
-        if (typeof deviceMotionEvent.requestPermission === "function") {
-          deviceMotionEvent
-            .requestPermission()
-            .then((permissionState) => {
-              if (permissionState === "granted") {
-                setIsPermissionGranted(true);
-                window.addEventListener("devicemotion", handleMotion);
-              }
-            })
-            .catch((err) => setError(err as Error));
-        } else {
-          // If permission request is not required
-          setIsPermissionGranted(true);
-          window.addEventListener("devicemotion", handleMotion);
-        }
+      if (supportCheck && isPermissionGranted) {
+        window.addEventListener("devicemotion", handleMotion);
       }
     }
 
     return () => {
       window.removeEventListener("devicemotion", handleMotion);
     };
-  }, [handleMotion]);
+  }, [isPermissionGranted]);
 
   const requestPermission = async () => {
+    setError(null);
+
     const deviceMotionEvent =
       DeviceMotionEvent as unknown as DeviceMotionEventExtended;
 
@@ -78,10 +63,14 @@ function useDeviceMotion() {
       } catch (err) {
         setError(err as Error);
       }
+    } else {
+      setIsPermissionGranted(true);
+      window.addEventListener("devicemotion", handleMotion);
     }
   };
 
   return {
+    setError,
     error,
     motion,
     requestPermission,
