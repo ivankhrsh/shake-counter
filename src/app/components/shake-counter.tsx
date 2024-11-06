@@ -85,9 +85,9 @@ export default function ShakeCounter() {
       <p className="text-center">
         {"Permission Status: "}
         {isPermissionGranted ? (
-          <span className="text-green-500">Granted</span>
+          <span className="font-bold text-green-500">Granted</span>
         ) : (
-          <span className="text-red-500">Not Granted</span>
+          <span className="font-bold text-red-500">Not Granted</span>
         )}
       </p>
       {error && <div className="text-center text-red-500">{error.message}</div>}
