@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 interface DeviceMotionState {
   x: number | null;
@@ -17,18 +17,18 @@ function useDeviceMotion() {
     y: null,
     z: null,
   });
-  
+
   const [error, setError] = useState<Error | null>(null);
   const [isSupported, setIsSupported] = useState(false);
   const [isPermissionGranted, setIsPermissionGranted] = useState(false);
 
-  const handleMotion = useCallback((event: DeviceMotionEvent) => {
+  const handleMotion = (event: DeviceMotionEvent) => {
     setMotion({
       x: event.accelerationIncludingGravity?.x ?? null,
       y: event.accelerationIncludingGravity?.y ?? null,
       z: event.accelerationIncludingGravity?.z ?? null,
     });
-  }, []);
+  };
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -62,7 +62,7 @@ function useDeviceMotion() {
     };
   }, [handleMotion]);
 
-  const requestPermission = useCallback(async () => {
+  const requestPermission = async () => {
     const deviceMotionEvent =
       DeviceMotionEvent as unknown as DeviceMotionEventExtended;
 
@@ -79,7 +79,7 @@ function useDeviceMotion() {
         setError(err as Error);
       }
     }
-  }, [handleMotion]);
+  };
 
   return {
     error,
