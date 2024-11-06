@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import useDeviceMotion from "../hooks/use-device-motion";
 import { cn } from "@/lib/utils";
 import OrientationDisplay from "./orientation-display";
+import { useMounted } from "../hooks/use-mounted";
 
 const intervals = [0.5, 1, 2, 5];
 
@@ -13,8 +14,9 @@ export default function ShakeCounter() {
   const [isShaking, setIsShaking] = useState(false);
   const [lastShakeTime, setLastShakeTime] = useState(0);
   const [isToolsVisible, setIsToolsVisible] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
+
+  const isMounted = useMounted();
 
   const { error, motion, isPermissionGranted, requestPermission, isSupported } =
     useDeviceMotion();
@@ -66,10 +68,6 @@ export default function ShakeCounter() {
       }
     }
   }, [motion, shakesInterval, lastShakeTime]);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   const handleRequestPermission = () => {
     requestPermission();
