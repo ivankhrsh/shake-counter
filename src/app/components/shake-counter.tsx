@@ -1,28 +1,29 @@
 "use client";
-import React, { useState } from "react";
-import useDeviceOrientation from "../hooks/useDeviceMotion";
+import React, { useEffect, useState } from "react";
+import useDeviceMotion from "../hooks/useDeviceMotion";
 
 export default function ShakeCounter() {
-  const [shakesCount, setShakes] = useState(0);
-  const [shakesInterval, setShakesInterval] = useState(1);
+  const [shakesCount, setShakesCount] = useState(0);
+  const [shakesIntervalInMs, setShakesIntervalInMs] = useState(1);
   const [isShaking, setIsShaking] = useState(false);
+  const [lastShakeTime, setLastShakeTime] = useState(0);
 
   const { error, motion, isPermissionGranted, requestPermission, isSupported } =
-    useDeviceOrientation();
+    useDeviceMotion();
 
   function handleCounterIncrease() {
-    setShakes((prevState) => prevState + 1);
+    setShakesCount((prevState) => prevState + 1);
     triggerShake();
   }
 
   function handleCounterReset() {
-    setShakes(0);
+    setShakesCount(0);
     triggerShake();
   }
 
   function handleShakeInterval(e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
-    setShakesInterval(Number(value));
+    setShakesIntervalInMs(Number(value));
   }
 
   function triggerShake() {
@@ -32,9 +33,35 @@ export default function ShakeCounter() {
     }, 300);
   }
 
+  useEffect(() => {
+    if (motion.x === null || motion.y === null || motion.z === null) return;
+
+    const currentTime = Date.now();
+    const shakeThreshold = 15; // 15 m/s from requirements
+
+    if (
+      Math.abs(motion.x) > shakeThreshold ||
+      Math.abs(motion.y) > shakeThreshold ||
+      Math.abs(motion.z) > shakeThreshold
+    ) {
+      if (currentTime - lastShakeTime > shakesIntervalInMs * 1000) {
+        setShakesCount((prevCount) => prevCount + 1);
+        setLastShakeTime(currentTime);
+        triggerShake();
+      }
+    }
+  }, [motion, shakesIntervalInMs, lastShakeTime]);
+
   return (
     <div className="m-auto w-full space-y-4 text-white lg:max-w-xl">
-      <p>Permission Status: {isPermissionGranted ? "Granted" : "No"}</p>
+      <p className="text-center">
+        {"Permission Status: "}
+        {isPermissionGranted ? (
+          <span className="text-green-500">Granted</span>
+        ) : (
+          <span className="text-red-500">Not Granted</span>
+        )}
+      </p>
       {error && <div className="text-center text-red-500">{error.message}</div>}
 
       {!isSupported && (
@@ -100,7 +127,7 @@ export default function ShakeCounter() {
                 type="number"
                 id="shakeInterval"
                 className="rounded-base mt-1 w-full rounded-sm border-2 bg-zinc-600 p-2 outline-none ring-offset-white/60 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-black focus-visible:ring-offset-2"
-                value={shakesInterval}
+                value={shakesIntervalInMs}
                 onChange={handleShakeInterval}
               />
             </div>

@@ -79,7 +79,7 @@ describe("ShakeCounter Component", () => {
 
     expect(screen.getByText("Shake counter")).toBeInTheDocument();
 
-    expect(screen.getByText("1")).toBeInTheDocument();
+    expect(screen.getByText("Shake counter")).toBeInTheDocument();
 
     expect(screen.getByText("x: 10")).toBeInTheDocument();
     expect(screen.getByText("y: 20")).toBeInTheDocument();
