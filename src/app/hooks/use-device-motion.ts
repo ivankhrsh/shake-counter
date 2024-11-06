@@ -82,6 +82,7 @@ function useDeviceMotion() {
   };
 
   return {
+    setError,
     error,
     motion,
     requestPermission,

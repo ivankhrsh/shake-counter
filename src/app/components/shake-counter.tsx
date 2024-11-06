@@ -15,8 +15,14 @@ export default function ShakeCounter() {
   const [isMounted, setIsMounted] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
 
-  const { error, motion, isPermissionGranted, requestPermission, isSupported } =
-    useDeviceMotion();
+  const {
+    setError,
+    error,
+    motion,
+    isPermissionGranted,
+    requestPermission,
+    isSupported,
+  } = useDeviceMotion();
 
   function handleCounterIncrease() {
     setShakesCount((prevState) => prevState + 1);
@@ -46,8 +52,6 @@ export default function ShakeCounter() {
       setIsShaking(false);
     }, 400);
   }
-
-  useEffect(() => {}, [isPermissionGranted]);
 
   useEffect(() => {
     if (motion.x === null || motion.y === null || motion.z === null) return;
@@ -97,7 +101,10 @@ export default function ShakeCounter() {
           <p>{error.message}</p>
 
           <button
-            onClick={requestPermission}
+            onClick={() => {
+              setError(null);
+              requestPermission();
+            }}
             className="w-full rounded-sm bg-green-600 p-2 text-center text-white hover:bg-green-500 hover:text-green-900"
           >
             Grant Permission
