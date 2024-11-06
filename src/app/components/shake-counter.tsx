@@ -3,6 +3,9 @@
 import React, { useEffect, useState } from "react";
 import useDeviceMotion from "../hooks/use-device-motion";
 import { cn } from "@/lib/utils";
+import OrientationDisplay from "./orientation-display";
+
+const intervals = [0.5, 1, 2, 5];
 
 export default function ShakeCounter() {
   const [shakesCount, setShakesCount] = useState(0);
@@ -15,14 +18,8 @@ export default function ShakeCounter() {
   const [isMounted, setIsMounted] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
 
-  const {
-    setError,
-    error,
-    motion,
-    isPermissionGranted,
-    requestPermission,
-    isSupported,
-  } = useDeviceMotion();
+  const { error, motion, isPermissionGranted, requestPermission, isSupported } =
+    useDeviceMotion();
 
   function handleCounterIncrease() {
     setShakesCount((prevState) => prevState + 1);
@@ -41,8 +38,7 @@ export default function ShakeCounter() {
     setIsToolsVisible((prevState) => !prevState);
   }
 
-  function handleShakeInterval(e: React.ChangeEvent<HTMLInputElement>) {
-    const value = e.target.value;
+  function handleShakeInterval(value: number) {
     setShakesIntervalInMs(value);
   }
 
@@ -78,15 +74,11 @@ export default function ShakeCounter() {
     setIsMounted(true);
   }, []);
 
-  useEffect(() => {
-    if (isPermissionGranted) {
-      setError(null);
-    }
-  }, [isPermissionGranted]);
+  useEffect(() => {}, [isPermissionGranted]);
 
   if (!isMounted) {
     return (
-      <div className="mx-auto flex h-[300px] w-full items-center justify-center rounded-sm border bg-zinc-800 text-white lg:max-w-xl">
+      <div className="mx-auto flex h-[300px] w-full items-center justify-center rounded-sm border text-white lg:max-w-xl">
         Loading...
       </div>
     );
@@ -109,7 +101,6 @@ export default function ShakeCounter() {
 
           <button
             onClick={() => {
-              setError(null);
               requestPermission();
             }}
             className="w-full rounded-sm bg-green-600 p-2 text-center text-white hover:bg-green-500 hover:text-green-900"
@@ -166,12 +157,9 @@ export default function ShakeCounter() {
 
           {isToolsVisible && (
             <>
-              <div className="rounded-lg border border-white p-4 text-center">
-                <h3 className="font-bold">Orientation</h3>
-                <p>x: {motion.x}</p>
-                <p>y: {motion.y}</p>
-                <p>z: {motion.z}</p>
-              </div>
+              {motion.x && motion.y && motion.z && (
+                <OrientationDisplay x={motion.x} y={motion.y} z={motion.z} />
+              )}
 
               <div className="mt-8 space-y-4">
                 <button
@@ -188,18 +176,19 @@ export default function ShakeCounter() {
                   Reset counter
                 </button>
 
-                <div>
-                  <label htmlFor="shakeInterval">
-                    Shake counter interval in seconds
-                  </label>
-                  <input
-                    type="number"
-                    id="shakeInterval"
-                    className="rounded-base mt-1 w-full rounded-sm border-2 bg-zinc-600 p-2 outline-none ring-offset-white/60 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-black focus-visible:ring-offset-2"
-                    value={shakesIntervalInMs}
-                    pattern="^[1-9][0-9]*$"
-                    onChange={handleShakeInterval}
-                  />
+                <p className="w-full rounded-sm border p-2">
+                  Shake counter interval in seconds: {shakesIntervalInMs}
+                </p>
+                <div className="flex flex-row gap-2">
+                  {intervals.map((interval) => (
+                    <button
+                      key={interval}
+                      className="w-full rounded-sm bg-blue-600 p-2 hover:bg-blue-500 hover:text-blue-900"
+                      onClick={() => handleShakeInterval(interval)}
+                    >
+                      {interval}s
+                    </button>
+                  ))}
                 </div>
               </div>
             </>

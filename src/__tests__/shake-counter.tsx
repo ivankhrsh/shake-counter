@@ -145,12 +145,20 @@ describe("ShakeCounter Component", () => {
     const toolsButton = screen.getByText("Show Tools");
     fireEvent.click(toolsButton);
 
-    const intervalInput = screen.getByLabelText(
-      "Shake counter interval in seconds"
+    const intervalValue = screen.getByText(
+      "Shake counter interval in seconds: 1"
     );
 
-    fireEvent.change(intervalInput, { target: { value: "2" } });
-    expect(intervalInput).toHaveValue(2);
+    const setValueButton = screen.getByText("2s");
+    fireEvent.click(setValueButton);
+
+    fireEvent.change(intervalValue, {
+      target: "Shake counter interval in seconds: 2",
+    });
+
+    expect(intervalValue).toHaveTextContent(
+      "Shake counter interval in seconds: 2"
+    );
   });
 
   it("displays error message from hook when error exists", () => {
