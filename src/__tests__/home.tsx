@@ -2,13 +2,13 @@ import React from "react";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import Home from "../app/page";
-import useDeviceOrientation from "@/app/hooks/useDeviceOrientation";
+import useDeviceMotion from "@/app/hooks/useDeviceMotion";
 
-jest.mock("@/app/hooks/useDeviceOrientation");
+jest.mock("@/app/hooks/useDeviceMotion");
 
-(useDeviceOrientation as jest.Mock).mockReturnValue({
+(useDeviceMotion as jest.Mock).mockReturnValue({
   error: null,
-  orientation: { x: 0, y: 0, z: 0 },
+  motion: { x: 0, y: 0, z: 0 },
   isPermissionGranted: true,
   requestPermission: jest.fn(),
   isSupported: true,

@@ -1,19 +1,14 @@
 "use client";
 import React, { useState } from "react";
-import useDeviceOrientation from "../hooks/useDeviceOrientation";
+import useDeviceOrientation from "../hooks/useDeviceMotion";
 
 export default function ShakeCounter() {
   const [shakesCount, setShakes] = useState(0);
   const [shakesInterval, setShakesInterval] = useState(1);
   const [isShaking, setIsShaking] = useState(false);
 
-  const {
-    error,
-    orientation,
-    isPermissionGranted,
-    requestPermission,
-    isSupported,
-  } = useDeviceOrientation();
+  const { error, motion, isPermissionGranted, requestPermission, isSupported } =
+    useDeviceOrientation();
 
   function handleCounterIncrease() {
     setShakes((prevState) => prevState + 1);
@@ -60,7 +55,7 @@ export default function ShakeCounter() {
             onClick={requestPermission}
             className="w-full rounded-sm bg-green-600 p-2 text-center hover:bg-green-500 hover:text-green-900"
           >
-            Grand Permission
+            Grant Permission
           </button>
         </div>
       )}
@@ -80,9 +75,9 @@ export default function ShakeCounter() {
 
           <div className="rounded-lg border border-white p-4 text-center">
             <h3 className="font-bold">Orientation</h3>
-            <p>x: {orientation.x}</p>
-            <p>y: {orientation.y}</p>
-            <p>z: {orientation.z}</p>
+            <p>x: {motion.x}</p>
+            <p>y: {motion.y}</p>
+            <p>z: {motion.z}</p>
           </div>
 
           <div className="mt-8 space-y-4">

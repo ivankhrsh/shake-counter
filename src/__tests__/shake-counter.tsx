@@ -1,12 +1,12 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 
-jest.mock("@/app/hooks/useDeviceOrientation", () => {
+jest.mock("@/app/hooks/useDeviceMotion", () => {
   return jest.fn();
 });
 
 import ShakeCounter from "@/app/components/shake-counter";
-import useDeviceOrientation from "@/app/hooks/useDeviceOrientation";
+import useDeviceMotion from "@/app/hooks/useDeviceMotion";
 
 describe("ShakeCounter Component", () => {
   beforeEach(() => {
@@ -14,27 +14,29 @@ describe("ShakeCounter Component", () => {
   });
 
   it("displays an error message if device is not supported", () => {
-    (useDeviceOrientation as jest.Mock).mockReturnValue({
+    (useDeviceMotion as jest.Mock).mockReturnValue({
       error: null,
       isSupported: false,
       isPermissionGranted: false,
       requestPermission: jest.fn(),
-      orientation: { x: null, y: null, z: null },
+      motion: { x: null, y: null, z: null },
     });
 
     render(<ShakeCounter />);
     expect(
-      screen.getByText("Your device is not supported. Please try another one.")
+      screen.getByText(
+        "Your device is not supported. App requires motion and orientation sensors. Please try another one device."
+      )
     ).toBeInTheDocument();
   });
 
   it("displays permission request message if permission is not granted", () => {
-    (useDeviceOrientation as jest.Mock).mockReturnValue({
+    (useDeviceMotion as jest.Mock).mockReturnValue({
       error: null,
       isSupported: true,
       isPermissionGranted: false,
       requestPermission: jest.fn(),
-      orientation: { x: null, y: null, z: null },
+      motion: { x: null, y: null, z: null },
     });
 
     render(<ShakeCounter />);
@@ -43,32 +45,31 @@ describe("ShakeCounter Component", () => {
         "This app needs access to the device's motion and orientation data in order to function properly."
       )
     ).toBeInTheDocument();
-    expect(screen.getByText("Grand Permission")).toBeInTheDocument();
+    expect(screen.getByText("Grant Permission")).toBeInTheDocument();
   });
 
   it("calls requestPermission when the Grant Permission button is clicked", () => {
     const requestPermissionMock = jest.fn();
-    (useDeviceOrientation as jest.Mock).mockReturnValue({
+    (useDeviceMotion as jest.Mock).mockReturnValue({
       error: null,
       isSupported: true,
       isPermissionGranted: false,
       requestPermission: requestPermissionMock,
-      orientation: { x: null, y: null, z: null },
+      motion: { x: null, y: null, z: null },
     });
 
     render(<ShakeCounter />);
-    fireEvent.click(screen.getByText("Grand Permission"));
+    fireEvent.click(screen.getByText("Grant Permission"));
     expect(requestPermissionMock).toHaveBeenCalled();
   });
 
   it("displays shake counter and orientation values when permission is granted", () => {
-
-    (useDeviceOrientation as jest.Mock).mockReturnValue({
+    (useDeviceMotion as jest.Mock).mockReturnValue({
       error: null,
       isSupported: true,
       isPermissionGranted: true,
       requestPermission: jest.fn(),
-      orientation: { x: 10, y: 20, z: 30 },
+      motion: { x: 10, y: 20, z: 30 },
     });
 
     render(<ShakeCounter />);
@@ -86,12 +87,12 @@ describe("ShakeCounter Component", () => {
   });
 
   it("increments shake counter when Increase counter button is clicked", () => {
-    (useDeviceOrientation as jest.Mock).mockReturnValue({
+    (useDeviceMotion as jest.Mock).mockReturnValue({
       error: null,
       isSupported: true,
       isPermissionGranted: true,
       requestPermission: jest.fn(),
-      orientation: { x: null, y: null, z: null },
+      motion: { x: null, y: null, z: null },
     });
 
     render(<ShakeCounter />);
@@ -104,12 +105,12 @@ describe("ShakeCounter Component", () => {
   });
 
   it("resets shake counter when Reset counter button is clicked", () => {
-    (useDeviceOrientation as jest.Mock).mockReturnValue({
+    (useDeviceMotion as jest.Mock).mockReturnValue({
       error: null,
       isSupported: true,
       isPermissionGranted: true,
       requestPermission: jest.fn(),
-      orientation: { x: null, y: null, z: null },
+      motion: { x: null, y: null, z: null },
     });
 
     render(<ShakeCounter />);
@@ -125,12 +126,12 @@ describe("ShakeCounter Component", () => {
   });
 
   it("updates shake interval when changing interval input", () => {
-    (useDeviceOrientation as jest.Mock).mockReturnValue({
+    (useDeviceMotion as jest.Mock).mockReturnValue({
       error: null,
       isSupported: true,
       isPermissionGranted: true,
       requestPermission: jest.fn(),
-      orientation: { x: null, y: null, z: null },
+      motion: { x: null, y: null, z: null },
     });
 
     render(<ShakeCounter />);
@@ -142,12 +143,12 @@ describe("ShakeCounter Component", () => {
 
   it("displays error message from hook when error exists", () => {
     const error = new Error("Permission denied");
-    (useDeviceOrientation as jest.Mock).mockReturnValue({
+    (useDeviceMotion as jest.Mock).mockReturnValue({
       error,
       isSupported: true,
       isPermissionGranted: false,
       requestPermission: jest.fn(),
-      orientation: { x: null, y: null, z: null },
+      motion: { x: null, y: null, z: null },
     });
 
     render(<ShakeCounter />);
