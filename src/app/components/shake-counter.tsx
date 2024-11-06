@@ -47,6 +47,8 @@ export default function ShakeCounter() {
     }, 400);
   }
 
+  useEffect(() => {}, [isPermissionGranted]);
+
   useEffect(() => {
     if (motion.x === null || motion.y === null || motion.z === null) return;
 
@@ -93,9 +95,10 @@ export default function ShakeCounter() {
       {error && (
         <div className="space-y-4 text-center text-red-500">
           <p>{error.message}</p>
+
           <button
             onClick={requestPermission}
-            className="w-full rounded-sm bg-green-600 p-2 text-center hover:bg-green-500 hover:text-green-900"
+            className="w-full rounded-sm bg-green-600 p-2 text-center text-white hover:bg-green-500 hover:text-green-900"
           >
             Grant Permission
           </button>
