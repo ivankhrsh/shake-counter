@@ -9,7 +9,7 @@ const intervals = [0.5, 1, 2, 5];
 
 export default function ShakeCounter() {
   const [shakesCount, setShakesCount] = useState(0);
-  const [shakesIntervalInMs, setShakesIntervalInMs] = useState<number>(1);
+  const [shakesInterval, setShakesInterval] = useState<number>(1);
   const [isShaking, setIsShaking] = useState(false);
   const [lastShakeTime, setLastShakeTime] = useState(0);
   const [isToolsVisible, setIsToolsVisible] = useState(false);
@@ -37,7 +37,7 @@ export default function ShakeCounter() {
   }
 
   function handleShakeInterval(value: number) {
-    setShakesIntervalInMs(value);
+    setShakesInterval(value);
   }
 
   function triggerShake() {
@@ -52,7 +52,7 @@ export default function ShakeCounter() {
 
     const currentTime = Date.now();
     const shakeThreshold = 15; // 15 m/s² from requirements
-    const interval = shakesIntervalInMs * 1000; //convert value to seconds
+    const interval = shakesInterval * 1000; //convert value to seconds
 
     if (
       Math.abs(motion.x) > shakeThreshold ||
@@ -65,7 +65,7 @@ export default function ShakeCounter() {
         triggerShake();
       }
     }
-  }, [motion, shakesIntervalInMs, lastShakeTime]);
+  }, [motion, shakesInterval, lastShakeTime]);
 
   useEffect(() => {
     setIsMounted(true);
@@ -174,13 +174,18 @@ export default function ShakeCounter() {
                 </button>
 
                 <p className="w-full rounded-sm border p-2">
-                  Shake counter interval in seconds: {shakesIntervalInMs}
+                  Shake counter interval in seconds: {shakesInterval}
                 </p>
                 <div className="flex flex-row gap-2">
                   {intervals.map((interval) => (
                     <button
                       key={interval}
-                      className="w-full rounded-sm bg-blue-600 p-2 hover:bg-blue-500 hover:text-blue-900"
+                      className={cn(
+                        "w-full rounded-sm bg-blue-600 p-2",
+                        shakesInterval === interval
+                          ? "bg-blue-300 text-blue-900"
+                          : "hover:bg-blue-500 hover:text-blue-900"
+                      )}
                       onClick={() => handleShakeInterval(interval)}
                     >
                       {interval}s
