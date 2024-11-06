@@ -2,15 +2,13 @@
 
 ### Getting Started
 
-//todo add readme
-
-First, run the development server:
+First, run the development server with your browser.
 
 ```bash
 npm run dev
 ```
 
-with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
@@ -18,9 +16,11 @@ Open [Preview on Vercel](https://shake-counter-jade.vercel.app/)
 
 ### Shake countering logic
 
-A shake be defined as a rapid change in acceleration along the X, Y, or Z axes (e.g., a jump of more than 15 m/s² on any axis).
+Requirements:
 
-If this conditions is satisfied shake counter is updated.
+- A shake be defined as a rapid change in acceleration along the X, Y, or Z axes (e.g., a jump of more than 15 m/s² on any axis).
+
+If both conditions are met, the shake counter is updated.
 
 ```bash
 motion.axis > shakeThreshold
