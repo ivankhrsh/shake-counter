@@ -1,12 +1,12 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 
-jest.mock("@/app/hooks/useDeviceMotion", () => {
+jest.mock("@/app/hooks/use-device-motion", () => {
   return jest.fn();
 });
 
 import ShakeCounter from "@/app/components/shake-counter";
-import useDeviceMotion from "@/app/hooks/useDeviceMotion";
+import useDeviceMotion from "@/app/hooks/use-device-motion";
 
 describe("ShakeCounter Component", () => {
   beforeEach(() => {
@@ -73,13 +73,13 @@ describe("ShakeCounter Component", () => {
     });
 
     render(<ShakeCounter />);
-
+    const showButton = screen.getByText("Show Tools");
+    fireEvent.click(showButton);
     const increaseButton = screen.getByText("Increase counter");
     fireEvent.click(increaseButton);
 
     expect(screen.getByText("Shake counter")).toBeInTheDocument();
-
-    expect(screen.getByText("Shake counter")).toBeInTheDocument();
+    expect(screen.getByText("2")).toBeInTheDocument();
 
     expect(screen.getByText("x: 10")).toBeInTheDocument();
     expect(screen.getByText("y: 20")).toBeInTheDocument();
@@ -96,6 +96,9 @@ describe("ShakeCounter Component", () => {
     });
 
     render(<ShakeCounter />);
+
+    const toolsButton = screen.getByText("Show Tools");
+    fireEvent.click(toolsButton);
 
     const increaseButton = screen.getByText("Increase counter");
     fireEvent.click(increaseButton);
@@ -114,14 +117,18 @@ describe("ShakeCounter Component", () => {
     });
 
     render(<ShakeCounter />);
+
+    const toolsButton = screen.getByText("Show Tools");
+    fireEvent.click(toolsButton);
+
     const increaseButton = screen.getByText("Increase counter");
     const resetButton = screen.getByText("Reset counter");
-
     fireEvent.click(increaseButton);
     fireEvent.click(increaseButton);
     expect(screen.getByText("2")).toBeInTheDocument();
 
     fireEvent.click(resetButton);
+    render(<ShakeCounter />);
     expect(screen.getByText("0")).toBeInTheDocument();
   });
 
@@ -135,6 +142,9 @@ describe("ShakeCounter Component", () => {
     });
 
     render(<ShakeCounter />);
+    const toolsButton = screen.getByText("Show Tools");
+    fireEvent.click(toolsButton);
+
     const intervalInput = screen.getByLabelText(
       "Shake counter interval in seconds"
     );
@@ -155,5 +165,33 @@ describe("ShakeCounter Component", () => {
 
     render(<ShakeCounter />);
     expect(screen.getByText("Permission denied")).toBeInTheDocument();
+  });
+
+  it("toggles tools visibility when the Show/Hide Tools button is clicked", () => {
+    (useDeviceMotion as jest.Mock).mockReturnValue({
+      error: null,
+      isSupported: true,
+      isPermissionGranted: true,
+      requestPermission: jest.fn(),
+      motion: { x: 10, y: 20, z: 30 },
+    });
+
+    render(<ShakeCounter />);
+
+    const toggleButton = screen.getByText("Show Tools");
+
+    // Click to show tools
+    fireEvent.click(toggleButton);
+    expect(screen.getByText("x: 10")).toBeInTheDocument();
+    expect(screen.getByText("y: 20")).toBeInTheDocument();
+    expect(screen.getByText("z: 30")).toBeInTheDocument();
+    expect(toggleButton).toHaveTextContent("Hide Tools");
+
+    // Click to hide tools
+    fireEvent.click(toggleButton);
+    expect(screen.queryByText("x: 10")).not.toBeInTheDocument();
+    expect(screen.queryByText("y: 20")).not.toBeInTheDocument();
+    expect(screen.queryByText("z: 30")).not.toBeInTheDocument();
+    expect(toggleButton).toHaveTextContent("Show Tools");
   });
 });

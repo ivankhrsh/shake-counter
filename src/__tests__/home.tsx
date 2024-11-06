@@ -2,9 +2,9 @@ import React from "react";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import Home from "../app/page";
-import useDeviceMotion from "@/app/hooks/useDeviceMotion";
+import useDeviceMotion from "@/app/hooks/use-device-motion";
 
-jest.mock("@/app/hooks/useDeviceMotion");
+jest.mock("@/app/hooks/use-device-motion");
 
 (useDeviceMotion as jest.Mock).mockReturnValue({
   error: null,
