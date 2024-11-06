@@ -25,7 +25,7 @@ describe("ShakeCounter Component", () => {
     render(<ShakeCounter />);
     expect(
       screen.getByText(
-        "Your device is not supported. App requires motion and orientation sensors. Please try another one device."
+        "Your device is not supported. This app requires motion and orientation sensors. Please try another device."
       )
     ).toBeInTheDocument();
   });
