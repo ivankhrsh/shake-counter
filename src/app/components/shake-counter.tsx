@@ -43,7 +43,7 @@ export default function ShakeCounter() {
 
   function handleShakeInterval(e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
-    setShakesIntervalInMs(Number(value) > 0 ? Number(value) : "");
+    setShakesIntervalInMs(value);
   }
 
   function triggerShake() {
