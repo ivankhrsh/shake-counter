@@ -135,7 +135,9 @@ describe("ShakeCounter Component", () => {
     });
 
     render(<ShakeCounter />);
-    const intervalInput = screen.getByLabelText("Shake counter interval in ms");
+    const intervalInput = screen.getByLabelText(
+      "Shake counter interval in seconds"
+    );
 
     fireEvent.change(intervalInput, { target: { value: "2" } });
     expect(intervalInput).toHaveValue(2);
