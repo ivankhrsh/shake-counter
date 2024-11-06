@@ -90,7 +90,17 @@ export default function ShakeCounter() {
           <span className="font-bold text-red-500">Not Granted</span>
         )}
       </p>
-      {error && <div className="text-center text-red-500">{error.message}</div>}
+      {error && (
+        <div className="space-y-4 text-center text-red-500">
+          <p>{error.message}</p>
+          <button
+            onClick={requestPermission}
+            className="w-full rounded-sm bg-green-600 p-2 text-center hover:bg-green-500 hover:text-green-900"
+          >
+            Grant Permission
+          </button>
+        </div>
+      )}
 
       {!isSupported && (
         <div className="text-center text-red-500">
