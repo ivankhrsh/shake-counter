@@ -78,6 +78,12 @@ export default function ShakeCounter() {
     setIsMounted(true);
   }, []);
 
+  useEffect(() => {
+    if (isPermissionGranted) {
+      setError(null);
+    }
+  }, [isPermissionGranted]);
+
   if (!isMounted) {
     return (
       <div className="mx-auto flex h-[300px] w-full items-center justify-center rounded-sm border bg-zinc-800 text-white lg:max-w-xl">
@@ -96,6 +102,7 @@ export default function ShakeCounter() {
           <span className="font-bold text-red-500">Not Granted</span>
         )}
       </p>
+
       {error && (
         <div className="space-y-4 text-center text-red-500">
           <p>{error.message}</p>
