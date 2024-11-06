@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import useDeviceMotion from "../hooks/useDeviceMotion";
+import useDeviceMotion from "../hooks/use-device-motion";
 import { cn } from "@/lib/utils";
 
 export default function ShakeCounter() {
