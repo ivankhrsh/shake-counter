@@ -30,6 +30,7 @@ export default function ShakeCounter() {
     setIsResetting(true);
     setTimeout(() => {
       setShakesCount(0);
+      navigator.vibrate(200);
       setIsResetting(false);
     }, 400);
   }
@@ -44,6 +45,7 @@ export default function ShakeCounter() {
 
   function triggerShake() {
     setIsShaking(true);
+    navigator.vibrate(200);
     setTimeout(() => {
       setIsShaking(false);
     }, 400);
