@@ -132,7 +132,7 @@ export default function ShakeCounter() {
         <>
           <div
             className={cn(
-              "flex h-full items-center justify-center gap-4 rounded-lg border border-white p-4",
+              "flex h-full items-center justify-center gap-4 rounded-lg border border-white p-4 transition-all ease-in-out",
               isShaking ? "animate-shakeGlow bg-green-400" : "",
               isResetting ? "animate-reset" : ""
             )}
