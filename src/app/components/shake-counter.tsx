@@ -5,6 +5,7 @@ import useDeviceMotion from "../hooks/use-device-motion";
 import { cn } from "@/lib/utils";
 import OrientationDisplay from "./orientation-display";
 import { useMounted } from "../hooks/use-mounted";
+import useVibration from "../hooks/use-vibration";
 
 const intervals = [0.5, 1, 2, 5];
 
@@ -17,6 +18,7 @@ export default function ShakeCounter() {
   const [isResetting, setIsResetting] = useState(false);
 
   const isMounted = useMounted();
+  const vibrate = useVibration();
 
   const { error, motion, isPermissionGranted, requestPermission, isSupported } =
     useDeviceMotion();
@@ -30,7 +32,7 @@ export default function ShakeCounter() {
     setIsResetting(true);
     setTimeout(() => {
       setShakesCount(0);
-      navigator.vibrate(200);
+      vibrate(200);
       setIsResetting(false);
     }, 400);
   }
@@ -45,7 +47,7 @@ export default function ShakeCounter() {
 
   function triggerShake() {
     setIsShaking(true);
-    navigator.vibrate(200);
+    vibrate(200);
     setTimeout(() => {
       setIsShaking(false);
     }, 400);
