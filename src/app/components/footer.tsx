@@ -1,6 +1,5 @@
 import Image from "next/image";
 import React from "react";
-import TelegramIcon from "./icons/telegram";
 
 export default function Footer() {
   return (
