@@ -20,16 +20,6 @@ export default function Footer() {
         />
         GitHub
       </a>
-
-      <a
-        className="hover:border-1 group flex items-center gap-2 rounded-sm p-2 hover:text-blue-500 hover:underline hover:underline-offset-4"
-        href="https://t.me/nullOn"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        <TelegramIcon />
-        Telegram
-      </a>
     </footer>
   );
 }
