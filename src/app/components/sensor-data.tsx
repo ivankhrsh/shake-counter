@@ -25,9 +25,32 @@ export default function SensorData() {
     gamma: 0,
   });
   const [error, setError] = useState<string | null>(null);
+  const [isTracking, setIsTracking] = useState(false); // Added state to track whether sensors are active
 
   const isTelegramWebAppAvailable =
     typeof window !== "undefined" && window.Telegram?.WebApp;
+
+  const startTracking = (
+    sensor: { start: StartFunction; stop: StopFunction },
+    sensorName: string
+  ) => {
+    sensor.start({ refresh_rate: 100 }, (success) => {
+      if (!success) {
+        setError(`Failed to start ${sensorName} tracking.`);
+      }
+    });
+  };
+
+  const stopTracking = (
+    sensor: { start: StartFunction; stop: StopFunction },
+    sensorName: string
+  ) => {
+    sensor.stop((success) => {
+      if (!success) {
+        setError(`Failed to stop ${sensorName} tracking.`);
+      }
+    });
+  };
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -42,20 +65,16 @@ export default function SensorData() {
     const { Accelerometer, Gyroscope, DeviceOrientation } =
       window.Telegram!.WebApp;
 
-    const startTracking = (
-      sensor: { start: StartFunction; stop: StopFunction },
-      sensorName: string
-    ) => {
-      sensor.start({ refresh_rate: 100 }, (success) => {
-        if (!success) {
-          setError(`Failed to start ${sensorName} tracking.`);
-        }
-      });
-    };
-
-    startTracking(Accelerometer, "accelerometer");
-    startTracking(Gyroscope, "gyroscope");
-    startTracking(DeviceOrientation, "device orientation");
+    // Only start tracking if `isTracking` is true
+    if (isTracking) {
+      startTracking(Accelerometer, "accelerometer");
+      startTracking(Gyroscope, "gyroscope");
+      startTracking(DeviceOrientation, "device orientation");
+    } else {
+      stopTracking(Accelerometer, "accelerometer");
+      stopTracking(Gyroscope, "gyroscope");
+      stopTracking(DeviceOrientation, "device orientation");
+    }
 
     const updateSensorData = () => {
       setAccelerometerData({
@@ -75,15 +94,17 @@ export default function SensorData() {
       });
     };
 
-    const intervalId = setInterval(updateSensorData, 100);
+    const intervalId = isTracking ? setInterval(updateSensorData, 100) : null;
 
     return () => {
-      clearInterval(intervalId);
-      Accelerometer.stop();
-      Gyroscope.stop();
-      DeviceOrientation.stop();
+      if (intervalId) clearInterval(intervalId);
+      if (isTracking) {
+        Accelerometer.stop();
+        Gyroscope.stop();
+        DeviceOrientation.stop();
+      }
     };
-  }, [isTelegramWebAppAvailable]);
+  }, [isTelegramWebAppAvailable, isTracking]);
 
   return (
     <div className="space-y-2">
@@ -124,6 +145,16 @@ export default function SensorData() {
           </div>
         </>
       )}
+
+      {/* Controls to Start and Stop Tracking */}
+      <div>
+        <button
+          onClick={() => setIsTracking((prevState) => !prevState)}
+          className="w-full rounded-sm bg-fuchsia-600 p-2 text-center text-white hover:bg-fuchsia-500 hover:text-fuchsia-900"
+        >
+          {isTracking ? " Stop Tracking" : "Start Tracking"}
+        </button>
+      </div>
     </div>
   );
 }

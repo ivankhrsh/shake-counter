@@ -11,10 +11,13 @@ export default function Home() {
   return (
     <div className="flex min-h-screen flex-col justify-items-center gap-16 bg-zinc-900 p-8 pb-20 font-[family-name:var(--font-geist-mono)] sm:p-20">
       <main className="flex h-full w-full flex-col gap-8 sm:items-start">
-        <UserAgent />
-        <Orientation />
-        <SensorData />
-        <FullscreenToggle />
+        <div className="m-auto w-2/3 space-y-6">
+          <UserAgent />
+          <Orientation />
+          <SensorData />
+          <FullscreenToggle />
+        </div>
+
         <h1 className="mt-16 w-full text-center text-xl text-white">
           Device Shake Counter
         </h1>

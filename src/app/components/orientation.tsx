@@ -6,6 +6,7 @@ export default function Orientation() {
   const orientation = useScreenOrientation();
   const [isTelegramWebAppAvailable, setIsTelegramWebAppAvailable] =
     useState(false);
+  const [isOrientationLocked, setIsOrientationLocked] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined" && window.Telegram?.WebApp) {
@@ -16,6 +17,7 @@ export default function Orientation() {
   const handleLockOrientation = () => {
     if (isTelegramWebAppAvailable) {
       window.Telegram.WebApp.lockOrientation();
+      setIsOrientationLocked(true);
     } else {
       console.error("Telegram WebApp API is not available.");
     }
@@ -24,6 +26,7 @@ export default function Orientation() {
   const handleUnlockOrientation = () => {
     if (isTelegramWebAppAvailable) {
       window.Telegram.WebApp.unlockOrientation();
+      setIsOrientationLocked(false);
     } else {
       console.error("Telegram WebApp API is not available.");
     }
@@ -33,7 +36,14 @@ export default function Orientation() {
     <div className="space-y-2">
       <h2>Device Orientation</h2>
       <div className="border border-white p-2">
-        <p>{orientation}</p>
+        <div>
+          {orientation}{" "}
+          {isOrientationLocked ? (
+            <p className="text-red-500">Locked</p>
+          ) : (
+            <p className="text-green-500">Unlocked</p>
+          )}
+        </div>
       </div>
       {isTelegramWebAppAvailable ? (
         <div className="flex gap-2">

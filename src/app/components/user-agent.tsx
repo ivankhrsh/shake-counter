@@ -22,17 +22,19 @@ export default function UserAgent() {
   }, []);
 
   return (
-    <div className="space-y-1">
+    <div>
       <h1>User Agent</h1>
       <p className="border border-white p-2">{userAgent}</p>
       <h2 className="text-red-500">
         New Telegram info is available on Android only
       </h2>
-      <div>
+
+      <div className="mt-4">
         <h3>Telegram Client Version</h3>
         <p className="border border-blue-500 p-2">
           {telegramVersion || "Unknown"}
         </p>
+        <p className="text-red-500">New features available only at version 8+</p>
       </div>
     </div>
   );
