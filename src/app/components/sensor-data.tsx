@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+
 type StartFunction = (
   params: { refresh_rate?: number },
   callback?: (success: boolean) => void
@@ -58,19 +59,19 @@ export default function SensorData() {
 
     const updateSensorData = () => {
       setAccelerometerData({
-        x: Accelerometer.x,
-        y: Accelerometer.y,
-        z: Accelerometer.z,
+        x: Accelerometer.x || 0,
+        y: Accelerometer.y || 0,
+        z: Accelerometer.z || 0,
       });
       setGyroscopeData({
-        x: Gyroscope.x,
-        y: Gyroscope.y,
-        z: Gyroscope.z,
+        x: Gyroscope.x || 0,
+        y: Gyroscope.y || 0,
+        z: Gyroscope.z || 0,
       });
       setOrientationData({
-        alpha: DeviceOrientation.alpha,
-        beta: DeviceOrientation.beta,
-        gamma: DeviceOrientation.gamma,
+        alpha: DeviceOrientation.alpha || 0,
+        beta: DeviceOrientation.beta || 0,
+        gamma: DeviceOrientation.gamma || 0,
       });
     };
 
@@ -95,9 +96,9 @@ export default function SensorData() {
             <h3>Accelerometer</h3>
             {accelerometerData && (
               <>
-                <p>X: {accelerometerData.x.toFixed(2)}</p>
-                <p>Y: {accelerometerData.y.toFixed(2)}</p>
-                <p>Z: {accelerometerData.z.toFixed(2)}</p>
+                <p>X: {(accelerometerData.x || 0).toFixed(2)}</p>
+                <p>Y: {(accelerometerData.y || 0).toFixed(2)}</p>
+                <p>Z: {(accelerometerData.z || 0).toFixed(2)}</p>
               </>
             )}
           </div>
@@ -105,9 +106,9 @@ export default function SensorData() {
             <h3>Gyroscope</h3>
             {gyroscopeData && (
               <>
-                <p>X: {gyroscopeData.x.toFixed(2)}</p>
-                <p>Y: {gyroscopeData.y.toFixed(2)}</p>
-                <p>Z: {gyroscopeData.z.toFixed(2)}</p>
+                <p>X: {(gyroscopeData.x || 0).toFixed(2)}</p>
+                <p>Y: {(gyroscopeData.y || 0).toFixed(2)}</p>
+                <p>Z: {(gyroscopeData.z || 0).toFixed(2)}</p>
               </>
             )}
           </div>
@@ -115,9 +116,9 @@ export default function SensorData() {
             <h3>Device Orientation</h3>
             {orientationData && (
               <>
-                <p>Alpha: {orientationData.alpha.toFixed(2)}</p>
-                <p>Beta: {orientationData.beta.toFixed(2)}</p>
-                <p>Gamma: {orientationData.gamma.toFixed(2)}</p>
+                <p>Alpha: {(orientationData.alpha || 0).toFixed(2)}</p>
+                <p>Beta: {(orientationData.beta || 0).toFixed(2)}</p>
+                <p>Gamma: {(orientationData.gamma || 0).toFixed(2)}</p>
               </>
             )}
           </div>

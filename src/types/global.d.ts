@@ -45,6 +45,7 @@ declare global {
         onEvent: (eventName: string, func: unknown) => void;
         exitFullscreen: () => void;
         requestFullscreen: () => void;
+        version: string;
       };
     };
   }
