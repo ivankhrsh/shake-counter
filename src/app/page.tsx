@@ -4,6 +4,7 @@ import ShakeCounter from "./components/shake-counter";
 import UserAgent from "./components/user-agent";
 import Orientation from "./components/orientation";
 import SensorData from "./components/sensor-data";
+import FullscreenToggle from "./components/fullscreen";
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
         <UserAgent />
         <Orientation />
         <SensorData />
+        <FullscreenToggle />
         <h1 className="mt-16 w-full text-center text-xl text-white">
           Device Shake Counter
         </h1>
