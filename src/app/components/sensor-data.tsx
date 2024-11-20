@@ -93,21 +93,33 @@ export default function SensorData() {
         <>
           <div className="border border-white p-2">
             <h3>Accelerometer</h3>
-            <p>X: {accelerometerData.x.toFixed(2)}</p>
-            <p>Y: {accelerometerData.y.toFixed(2)}</p>
-            <p>Z: {accelerometerData.z.toFixed(2)}</p>
+            {accelerometerData && (
+              <>
+                <p>X: {accelerometerData.x.toFixed(2)}</p>
+                <p>Y: {accelerometerData.y.toFixed(2)}</p>
+                <p>Z: {accelerometerData.z.toFixed(2)}</p>
+              </>
+            )}
           </div>
           <div className="border border-white p-2">
             <h3>Gyroscope</h3>
-            <p>X: {gyroscopeData.x.toFixed(2)}</p>
-            <p>Y: {gyroscopeData.y.toFixed(2)}</p>
-            <p>Z: {gyroscopeData.z.toFixed(2)}</p>
+            {gyroscopeData && (
+              <>
+                <p>X: {gyroscopeData.x.toFixed(2)}</p>
+                <p>Y: {gyroscopeData.y.toFixed(2)}</p>
+                <p>Z: {gyroscopeData.z.toFixed(2)}</p>
+              </>
+            )}
           </div>
           <div className="border border-white p-2">
             <h3>Device Orientation</h3>
-            <p>Alpha: {orientationData.alpha.toFixed(2)}</p>
-            <p>Beta: {orientationData.beta.toFixed(2)}</p>
-            <p>Gamma: {orientationData.gamma.toFixed(2)}</p>
+            {orientationData && (
+              <>
+                <p>Alpha: {orientationData.alpha.toFixed(2)}</p>
+                <p>Beta: {orientationData.beta.toFixed(2)}</p>
+                <p>Gamma: {orientationData.gamma.toFixed(2)}</p>
+              </>
+            )}
           </div>
         </>
       )}
