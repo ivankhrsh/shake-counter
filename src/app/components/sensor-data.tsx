@@ -1,5 +1,11 @@
 "use client";
 import React, { useState, useEffect } from "react";
+type StartFunction = (
+  params: { refresh_rate?: number },
+  callback?: (success: boolean) => void
+) => void;
+
+type StopFunction = (callback?: (success: boolean) => void) => void;
 
 export default function SensorData() {
   const [accelerometerData, setAccelerometerData] = useState({
@@ -23,6 +29,10 @@ export default function SensorData() {
     typeof window !== "undefined" && window.Telegram?.WebApp;
 
   useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
     if (!isTelegramWebAppAvailable) {
       setError("Telegram WebApp API is not available.");
       return;
@@ -32,10 +42,10 @@ export default function SensorData() {
       window.Telegram!.WebApp;
 
     const startTracking = (
-      sensor: { start: Function; stop: Function },
+      sensor: { start: StartFunction; stop: StopFunction },
       sensorName: string
     ) => {
-      sensor.start({ refresh_rate: 100 }, (success: boolean) => {
+      sensor.start({ refresh_rate: 100 }, (success) => {
         if (!success) {
           setError(`Failed to start ${sensorName} tracking.`);
         }

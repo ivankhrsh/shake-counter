@@ -40,6 +40,11 @@ declare global {
           ) => void;
           stop: (callback?: (success: boolean) => void) => void;
         };
+        isFullscreen: boolean;
+        offEvent: (eventName: string, func: unknown) => void;
+        onEvent: (eventName: string, func: unknown) => void;
+        exitFullscreen: () => void;
+        requestFullscreen: () => void;
       };
     };
   }

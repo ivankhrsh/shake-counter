@@ -1,12 +1,20 @@
 "use client";
 import useScreenOrientation from "@/hooks/use-screen-orientation";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Orientation() {
   const orientation = useScreenOrientation();
+  const [isTelegramWebAppAvailable, setIsTelegramWebAppAvailable] =
+    useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.Telegram?.WebApp) {
+      setIsTelegramWebAppAvailable(true);
+    }
+  }, []);
 
   const handleLockOrientation = () => {
-    if (window.Telegram?.WebApp?.lockOrientation) {
+    if (isTelegramWebAppAvailable) {
       window.Telegram.WebApp.lockOrientation();
     } else {
       console.error("Telegram WebApp API is not available.");
@@ -14,15 +22,12 @@ export default function Orientation() {
   };
 
   const handleUnlockOrientation = () => {
-    if (window.Telegram?.WebApp?.unlockOrientation) {
+    if (isTelegramWebAppAvailable) {
       window.Telegram.WebApp.unlockOrientation();
     } else {
       console.error("Telegram WebApp API is not available.");
     }
   };
-
-  const isTelegramWebAppAvailable =
-    typeof window !== "undefined" && window.Telegram?.WebApp;
 
   return (
     <div className="space-y-2">
