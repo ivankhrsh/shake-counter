@@ -7,7 +7,7 @@ export default function Home() {
     <div className="flex min-h-screen flex-col justify-items-center gap-16 bg-zinc-900 p-8 pb-20 font-[family-name:var(--font-geist-mono)] sm:p-20">
       <main className="flex h-full w-full flex-col gap-8 sm:items-start">
         <h1 className="mt-16 w-full text-center text-xl text-white">
-          Device Shake Counter
+          Mobile Device Shake Counter
         </h1>
 
         <ShakeCounter />
